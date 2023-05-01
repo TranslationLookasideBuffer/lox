@@ -1,0 +1,9 @@
+.repo
+.ignore
+.vscode
+bazel
+bazel-bin
+bazel-out
+bazel-lox
+bazel-testlogs
+internal

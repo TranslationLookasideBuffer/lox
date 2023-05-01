@@ -1,0 +1,15 @@
+*.class
+*.log
+*.jar
+*.zip
+*.tar.gz
+.repo
+.ignore
+.vscode
+.ijwb
+bazel
+bazel-bin
+bazel-out
+bazel-testlogs
+bazel-lox
+internal
