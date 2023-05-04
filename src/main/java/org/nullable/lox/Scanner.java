@@ -40,7 +40,9 @@ import static org.nullable.lox.TokenType.TRUE;
 import static org.nullable.lox.TokenType.VAR;
 import static org.nullable.lox.TokenType.WHILE;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,7 @@ class Scanner {
   private int start = 0;
   private int current = 0;
   private int line = 1;
+  private Deque<Location> blockComments = new ArrayDeque<>();
 
   Scanner(String source) {
     this.source = source;
@@ -116,6 +119,21 @@ class Scanner {
         if (match('/')) {
           // A comment goes until the end of the line.
           while (peek() != '\n' && !isAtEnd()) advance();
+        } else if (match('*')) {
+          blockComments.push(new Location(start, line));
+          for (char peek = peek(); !isAtEnd(); peek = peek()) {
+            advance();
+            if (peek == '*' && peekNext() == '/') {
+              advance();
+              blockComments.pop();
+              if (blockComments.isEmpty()) {
+                break;
+              }
+            } else if (peek == '/' && peekNext() == '*') {
+              advance();
+              blockComments.push(new Location(start, line));
+            }
+          }
         } else {
           addToken(SLASH);
         }
@@ -254,4 +272,6 @@ class Scanner {
     String text = source.substring(start, current);
     tokens.add(new Token(type, text, literal, line));
   }
+
+  private record Location(int start, int line) {}
 }
