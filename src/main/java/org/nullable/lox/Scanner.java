@@ -123,13 +123,13 @@ class Scanner {
           blockComments.push(new Location(start, line));
           for (char peek = peek(); !isAtEnd(); peek = peek()) {
             advance();
-            if (peek == '*' && peekNext() == '/') {
+            if (peek == '*' && peek() == '/') {
               advance();
               blockComments.pop();
               if (blockComments.isEmpty()) {
                 break;
               }
-            } else if (peek == '/' && peekNext() == '*') {
+            } else if (peek == '/' && peek() == '*') {
               advance();
               blockComments.push(new Location(start, line));
             }
