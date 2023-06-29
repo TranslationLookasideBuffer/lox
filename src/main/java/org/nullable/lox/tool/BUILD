@@ -11,7 +11,10 @@ java_binary(
 
 run_binary(
     name = "generate_ast",
-    outs = ["Expr.java"],
+    outs = [
+        "Expr.java",
+        "Stmt.java",
+    ],
     args = ["$(location Expr.java)"],
     tool = ":generate_ast_binary",
 )
